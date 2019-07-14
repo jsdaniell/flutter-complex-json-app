@@ -21,9 +21,9 @@ class PropertyScopedModel extends Model {
 
   // Getting JSON Data
 
-  Future<dynamic> getData() async {
+  Future<dynamic> _getData(String place) async {
     String uri =
-        "https://api.nestoria.co.uk/api?encoding=json&pretty=1&action=search_listings&country=uk&listing_type=buy&place_name=brighton";
+        "https://api.nestoria.co.uk/api?encoding=json&pretty=1&action=search_listings&country=uk&listing_type=buy&place_name=$place";
 
     var res = await http.get(Uri.encodeFull(uri));
 
@@ -32,10 +32,10 @@ class PropertyScopedModel extends Model {
 
   // Serializing Data Requested with previous maded Serializer (./nestoria.dart).
 
-  Future getProperties() async {
+  Future getProperties(String place) async {
     _isLoading = true;
 
-    var responseData = await getData();
+    var responseData = await _getData(place);
 
     Nestoria nestoria =
         serializers.deserializeWith(Nestoria.serializer, responseData);

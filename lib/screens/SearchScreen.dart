@@ -1,4 +1,5 @@
 import 'package:example_flutter/models/property_scoped_model.dart';
+import 'package:example_flutter/ui_widgets/search.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -15,7 +16,9 @@ class SearchScreen extends StatelessWidget {
           return CustomScrollView(
             slivers: <Widget>[
               SliverAppBar(
-                title: Text("Property Finder"),
+                title: SearchWidget(
+                  performSearch: model.getProperties,
+                ),
               ),
               model.isLoading
                   ? SliverFillRemaining(
