@@ -1,4 +1,5 @@
 import 'package:example_flutter/models/property_scoped_model.dart';
+import 'package:example_flutter/ui_widgets/property_item.dart';
 import 'package:example_flutter/ui_widgets/search.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -29,9 +30,15 @@ class SearchScreen extends StatelessWidget {
                   : SliverList(
                       delegate: SliverChildBuilderDelegate(
                         (context, index) {
-                          return Padding(
-                            padding: EdgeInsets.all(16.0),
-                            child: Text(model.properties[index].title),
+                          return Column(
+                            children: <Widget>[
+                              PropertyItem(model.properties[index]),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0),
+                                child: Divider(height: 1, color: Colors.grey),
+                              )
+                            ],
                           );
                         },
                         childCount: model.properties.length,
