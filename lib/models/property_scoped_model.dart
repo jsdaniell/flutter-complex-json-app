@@ -12,12 +12,18 @@ class PropertyScopedModel extends Model {
   // Handling JSON Data
 
   List<Property> _properties = [];
-  List<Property> get properties => _properties;
+  bool _isLoading = false;
+  String _statusText = "Start Search";
+  int _totalResults;
 
   // Variable to be used to store the information that is loadind, can be used with loading widgets.
 
-  bool _isLoading = false;
+  List<Property> get properties => _properties;
   bool get isLoading => _isLoading;
+  String get statusText => _statusText;
+  int get totalResults => _totalResults;
+
+  int getPropertyCount() => _properties.length;
 
   // Getting JSON Data
 
@@ -42,6 +48,12 @@ class PropertyScopedModel extends Model {
 
     _properties =
         nestoria.response.listings.map((property) => property).toList();
+
+    if (nestoria.response.listings.isEmpty) {
+      _statusText = "Nothing Found";
+    }
+
+    _totalResults = nestoria.response.totalResults;
 
     _isLoading = false;
 

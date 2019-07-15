@@ -50,12 +50,12 @@ class PropertyItem extends StatelessWidget {
                       SizedBox(height: 10),
                       Row(
                         children: <Widget>[
-                         Expanded(
-                           child:  Text(
-                            property.priceFormatted,
-                            style: Theme.of(context).textTheme.headline,
+                          Expanded(
+                            child: Text(
+                              property.priceFormatted,
+                              style: Theme.of(context).textTheme.headline,
+                            ),
                           ),
-                         )
                           TextIcon(
                             text: "2",
                             icon: FontAwesomeIcons.bed,

@@ -27,23 +27,50 @@ class SearchScreen extends StatelessWidget {
                         child: CircularProgressIndicator(),
                       ),
                     )
-                  : SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) {
-                          return Column(
-                            children: <Widget>[
-                              PropertyItem(model.properties[index]),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16.0),
-                                child: Divider(height: 1, color: Colors.grey),
-                              )
-                            ],
-                          );
-                        },
-                        childCount: model.properties.length,
-                      ),
-                    )
+                  : model.getPropertyCount() < 1
+                      ? SliverFillRemaining(
+                          child: Center(
+                            child: Text(
+                              model.statusText,
+                              style: Theme.of(context).textTheme.headline,
+                            ),
+                          ),
+                        )
+                      : SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            (context, index) {
+                              if (index == 0) {
+                                return Container(
+                                  padding: const EdgeInsets.all(16),
+                                  decoration: BoxDecoration(
+                                      border: Border(
+                                          bottom: BorderSide(
+                                              color: Colors.grey[300]))),
+                                  child: Text(
+                                    "${model.totalResults} results",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .body2
+                                        .copyWith(color: Colors.grey[600]),
+                                  ),
+                                );
+                              } else {
+                                return Column(
+                                  children: <Widget>[
+                                    PropertyItem(model.properties[index - 1]),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 16.0),
+                                      child: Divider(
+                                          height: 1, color: Colors.grey),
+                                    )
+                                  ],
+                                );
+                              }
+                            },
+                            childCount: model.getPropertyCount() + 1,
+                          ),
+                        )
             ],
           );
         }),
