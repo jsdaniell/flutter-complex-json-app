@@ -33,7 +33,19 @@ class PropertyScopedModel extends Model {
 
     var res = await http.get(Uri.encodeFull(uri));
 
-    return json.decode(res.body);
+    var decodedJson = json.decode(res.body, reviver: (k, v) {
+      if (k == "bathroom_number") {
+        if (v == "") return null;
+        return v;
+      }
+      if (k == "bedroom_number") {
+        if (v == "") return null;
+        return v;
+      }
+      return v;
+    });
+
+    return decodedJson;
   }
 
   // Serializing Data Requested with previous maded Serializer (./nestoria.dart).
