@@ -63,6 +63,11 @@ class _$ResponseSerializer implements StructuredSerializer<Response> {
       'total_results',
       serializers.serialize(object.totalResults,
           specifiedType: const FullType(int)),
+      'page',
+      serializers.serialize(object.page, specifiedType: const FullType(int)),
+      'total_pages',
+      serializers.serialize(object.totalPages,
+          specifiedType: const FullType(int)),
     ];
     if (object.listings != null) {
       result
@@ -93,6 +98,14 @@ class _$ResponseSerializer implements StructuredSerializer<Response> {
           break;
         case 'total_results':
           result.totalResults = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int;
+          break;
+        case 'page':
+          result.page = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int;
+          break;
+        case 'total_pages':
+          result.totalPages = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int;
           break;
       }
@@ -350,13 +363,24 @@ class _$Response extends Response {
   final BuiltList<Property> listings;
   @override
   final int totalResults;
+  @override
+  final int page;
+  @override
+  final int totalPages;
 
   factory _$Response([void Function(ResponseBuilder) updates]) =>
       (new ResponseBuilder()..update(updates)).build();
 
-  _$Response._({this.listings, this.totalResults}) : super._() {
+  _$Response._({this.listings, this.totalResults, this.page, this.totalPages})
+      : super._() {
     if (totalResults == null) {
       throw new BuiltValueNullFieldError('Response', 'totalResults');
+    }
+    if (page == null) {
+      throw new BuiltValueNullFieldError('Response', 'page');
+    }
+    if (totalPages == null) {
+      throw new BuiltValueNullFieldError('Response', 'totalPages');
     }
   }
 
@@ -372,19 +396,26 @@ class _$Response extends Response {
     if (identical(other, this)) return true;
     return other is Response &&
         listings == other.listings &&
-        totalResults == other.totalResults;
+        totalResults == other.totalResults &&
+        page == other.page &&
+        totalPages == other.totalPages;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc(0, listings.hashCode), totalResults.hashCode));
+    return $jf($jc(
+        $jc($jc($jc(0, listings.hashCode), totalResults.hashCode),
+            page.hashCode),
+        totalPages.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('Response')
           ..add('listings', listings)
-          ..add('totalResults', totalResults))
+          ..add('totalResults', totalResults)
+          ..add('page', page)
+          ..add('totalPages', totalPages))
         .toString();
   }
 }
@@ -401,12 +432,22 @@ class ResponseBuilder implements Builder<Response, ResponseBuilder> {
   int get totalResults => _$this._totalResults;
   set totalResults(int totalResults) => _$this._totalResults = totalResults;
 
+  int _page;
+  int get page => _$this._page;
+  set page(int page) => _$this._page = page;
+
+  int _totalPages;
+  int get totalPages => _$this._totalPages;
+  set totalPages(int totalPages) => _$this._totalPages = totalPages;
+
   ResponseBuilder();
 
   ResponseBuilder get _$this {
     if (_$v != null) {
       _listings = _$v.listings?.toBuilder();
       _totalResults = _$v.totalResults;
+      _page = _$v.page;
+      _totalPages = _$v.totalPages;
       _$v = null;
     }
     return this;
@@ -431,7 +472,10 @@ class ResponseBuilder implements Builder<Response, ResponseBuilder> {
     try {
       _$result = _$v ??
           new _$Response._(
-              listings: _listings?.build(), totalResults: totalResults);
+              listings: _listings?.build(),
+              totalResults: totalResults,
+              page: page,
+              totalPages: totalPages);
     } catch (_) {
       String _$failedField;
       try {

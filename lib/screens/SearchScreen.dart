@@ -7,7 +7,12 @@ import 'package:scoped_model/scoped_model.dart';
 // Scoped Model allows pass data to widgets more easily, where receives a list of PropertyScopeModel.
 // This widget aways rebuild when the data response changes.
 
-class SearchScreen extends StatelessWidget {
+class SearchScreen extends StatefulWidget {
+  @override
+  _SearchScreenState createState() => _SearchScreenState();
+}
+
+class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,6 +25,8 @@ class SearchScreen extends StatelessWidget {
                 title: SearchWidget(
                   performSearch: model.getProperties,
                 ),
+                floating: true,
+                snap: true,
               ),
               model.isLoading
                   ? SliverFillRemaining(
@@ -39,7 +46,17 @@ class SearchScreen extends StatelessWidget {
                       : SliverList(
                           delegate: SliverChildBuilderDelegate(
                             (context, index) {
-                              if (index == 0) {
+                              print("index: $index");
+                              if (index == model.getPropertyCount()) {
+                                if (model.hasMorePages) {
+                                  return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 16.0),
+                                      child: Center(
+                                        child: CircularProgressIndicator(),
+                                      ));
+                                }
+                              } else if (index == 0) {
                                 return Container(
                                   padding: const EdgeInsets.all(16),
                                   decoration: BoxDecoration(

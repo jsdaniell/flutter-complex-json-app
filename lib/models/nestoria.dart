@@ -33,6 +33,11 @@ abstract class Response implements Built<Response, ResponseBuilder> {
   @BuiltValueField(wireName: 'total_results')
   int get totalResults;
 
+  int get page;
+
+  @BuiltValueField(wireName: 'total_pages')
+  int get totalPages;
+
   Response._();
   factory Response([updates(ResponseBuilder b)]) = _$Response;
 }
