@@ -13,6 +13,33 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
+  ScrollController controller;
+  int page = 1;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = new ScrollController()..addListener(_scrollListener);
+
+    // Two dots (..) represents the same action that [controller.addListener] after [new ScrollController]
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    controller.dispose();
+  }
+
+  void _scrollListener() {
+    var props = PropertyScopedModel.of(context);
+    if (controller.position.pixels == controller.position.maxScrollExtent) {
+      if (props.hasMorePages) {
+        page++;
+        props.getProperties(props.placeName, page);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,6 +47,7 @@ class _SearchScreenState extends State<SearchScreen> {
         child: ScopedModelDescendant<PropertyScopedModel>(
             builder: (context, child, model) {
           return CustomScrollView(
+            controller: controller,
             slivers: <Widget>[
               SliverAppBar(
                 title: SearchWidget(

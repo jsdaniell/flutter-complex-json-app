@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:http/http.dart' as http;
 import 'nestoria.dart';
@@ -17,6 +18,8 @@ class PropertyScopedModel extends Model {
   int _totalResults;
   int _totalPages;
   bool _hasMorePages = true;
+  String _placeName;
+  bool _isLoadingMore = false;
 
   // Variable to be used to store the information that is loadind, can be used with loading widgets.
 
@@ -26,15 +29,14 @@ class PropertyScopedModel extends Model {
   int get totalResults => _totalResults;
   int get totalPages => _totalPages;
   bool get hasMorePages => _hasMorePages;
+  String get placeName => _placeName;
+  bool get isLoadingMode => _isLoadingMore;
 
   int getPropertyCount() => _properties.length;
 
   // Getting JSON Data
 
-  Future<dynamic> _getData(String place) async {
-    // String uri =
-    //     "https://api.nestoria.co.uk/api?encoding=json&pretty=1&action=search_listings&has_photo=1&country=uk&listing_type=buy&place_name=$place";
-
+  Future<dynamic> _getData(String place, [int page = 1]) async {
     var uri = Uri.https(
       "api.nestoria.co.uk",
       "/api",
@@ -42,6 +44,7 @@ class PropertyScopedModel extends Model {
         "encoding": "json",
         "action": "search_listings",
         "has_photo": "1",
+        "page": page.toString(),
         "number_of_results": "10",
         "place_name": place.isNotEmpty ? place : "brighton"
       },
@@ -66,16 +69,24 @@ class PropertyScopedModel extends Model {
 
   // Serializing Data Requested with previous maded Serializer (./nestoria.dart).
 
-  Future getProperties(String place) async {
-    _isLoading = true;
+  Future getProperties(String place, [int page = 1]) async {
+    if (page == 1) {
+      _isLoading = true;
+      _properties.clear();
+    } else {
+      _isLoadingMore = true;
+    }
 
-    var responseData = await _getData(place);
+    _placeName = place;
+
+    var responseData = await _getData(place, page);
 
     Nestoria nestoria =
         serializers.deserializeWith(Nestoria.serializer, responseData);
 
-    _properties =
-        nestoria.response.listings.map((property) => property).toList();
+    nestoria.response.listings.forEach((property) {
+      _properties.add(property);
+    });
 
     if (nestoria.response.listings.isEmpty) {
       _statusText = "Nothing Found";
@@ -88,8 +99,17 @@ class PropertyScopedModel extends Model {
       _hasMorePages = false;
     }
 
-    _isLoading = false;
+    if (page == 1) {
+      _isLoading = false;
+    } else {
+      _isLoadingMore = false;
+    }
 
     notifyListeners();
   }
+
+  // Acccess data outside the ScopedModelDescendant Widget, in this case used to pass actual page...
+
+  static PropertyScopedModel of(BuildContext context) =>
+      ScopedModel.of<PropertyScopedModel>(context);
 }
