@@ -30,7 +30,7 @@ class PropertyScopedModel extends Model {
   int get totalPages => _totalPages;
   bool get hasMorePages => _hasMorePages;
   String get placeName => _placeName;
-  bool get isLoadingMode => _isLoadingMore;
+  bool get isLoadingMore => _isLoadingMore;
 
   int getPropertyCount() => _properties.length;
 

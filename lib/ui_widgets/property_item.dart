@@ -41,7 +41,7 @@ class PropertyItem extends StatelessWidget {
                         style: TextStyle(color: Colors.deepPurple),
                       ),
                       Text(
-                        "By ${property.listerName}" ?? "unavailable",
+                        "By ${property.listerName ?? "unavailable"}",
                         style: Theme.of(context)
                             .textTheme
                             .body2
@@ -57,12 +57,12 @@ class PropertyItem extends StatelessWidget {
                             ),
                           ),
                           TextIcon(
-                            text: "${property.bedroomNumber}" ?? "#",
+                            text: "${property.bedroomNumber ?? "#"}",
                             icon: FontAwesomeIcons.bed,
                             isColumn: false,
                           ),
                           TextIcon(
-                            text: "${property.bathroomNumber}" ?? "#",
+                            text: "${property.bathroomNumber ?? "#"}",
                             icon: FontAwesomeIcons.shower,
                             isColumn: false,
                           ),

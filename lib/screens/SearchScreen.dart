@@ -3,6 +3,7 @@ import 'package:example_flutter/ui_widgets/property_item.dart';
 import 'package:example_flutter/ui_widgets/search.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:example_flutter/screens/DetailScreen.dart';
 
 // Scoped Model allows pass data to widgets more easily, where receives a list of PropertyScopeModel.
 // This widget aways rebuild when the data response changes.
@@ -33,7 +34,7 @@ class _SearchScreenState extends State<SearchScreen> {
   void _scrollListener() {
     var props = PropertyScopedModel.of(context);
     if (controller.position.pixels == controller.position.maxScrollExtent) {
-      if (props.hasMorePages) {
+      if (!props.isLoadingMore && props.hasMorePages) {
         page++;
         props.getProperties(props.placeName, page);
       }
@@ -74,7 +75,6 @@ class _SearchScreenState extends State<SearchScreen> {
                       : SliverList(
                           delegate: SliverChildBuilderDelegate(
                             (context, index) {
-                              print("index: $index");
                               if (index == model.getPropertyCount()) {
                                 if (model.hasMorePages) {
                                   return Padding(
@@ -102,7 +102,18 @@ class _SearchScreenState extends State<SearchScreen> {
                               } else {
                                 return Column(
                                   children: <Widget>[
-                                    PropertyItem(model.properties[index - 1]),
+                                    InkWell(
+                                      child: PropertyItem(
+                                          model.properties[index - 1]),
+                                      onTap: () {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  DetailScreen(model
+                                                      .properties[index - 1])),
+                                        );
+                                      },
+                                    ),
                                     Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 16.0),
