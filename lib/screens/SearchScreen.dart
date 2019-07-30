@@ -75,7 +75,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       : SliverList(
                           delegate: SliverChildBuilderDelegate(
                             (context, index) {
-                              if (index == model.getPropertyCount()) {
+                              if (index == model.getPropertyCount() + 1) {
                                 if (model.hasMorePages) {
                                   return Padding(
                                       padding: const EdgeInsets.symmetric(
@@ -84,6 +84,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                         child: CircularProgressIndicator(),
                                       ));
                                 }
+                                return Container();
                               } else if (index == 0) {
                                 return Container(
                                   padding: const EdgeInsets.all(16),
@@ -124,7 +125,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 );
                               }
                             },
-                            childCount: model.getPropertyCount() + 1,
+                            childCount: model.getPropertyCount() + 2,
                           ),
                         )
             ],

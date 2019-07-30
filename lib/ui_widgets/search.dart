@@ -1,3 +1,4 @@
+import 'package:example_flutter/screens/SettingScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -41,7 +42,10 @@ class SearchWidget extends StatelessWidget {
               ),
             ),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => SettingScreen()));
+              },
               child: Icon(FontAwesomeIcons.slidersH, color: Colors.black54),
             )
           ],

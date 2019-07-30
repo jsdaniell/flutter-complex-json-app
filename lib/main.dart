@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // propertyScopedModel.getProperties();
+    propertyScopedModel.initializeValues();
     return ScopedModel<PropertyScopedModel>(
       model: propertyScopedModel,
       child: MaterialApp(
