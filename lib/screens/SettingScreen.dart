@@ -16,25 +16,28 @@ class SettingScreen extends StatelessWidget {
             ListTile(
               title: Text("Country"),
               trailing: CustomDropdownButton(
-                  value: model.country,
-                  items: model.countryList,
-                  onChanged: model.setCountry),
+                value: model.country,
+                items: model.countryList,
+                onChanged: model.setCountry,
+              ),
             ),
             Divider(),
             ListTile(
               title: Text("Listing Type"),
               trailing: CustomDropdownButton(
-                  value: model.listingType,
-                  items: model.listingTypeList,
-                  onChanged: model.setListingType),
+                value: model.listingType,
+                items: model.listingTypeList,
+                onChanged: model.setListingType,
+              ),
             ),
             Divider(),
             ListTile(
               title: Text("Sort"),
               trailing: CustomDropdownButton(
-                  value: model.sort,
-                  items: model.sortList,
-                  onChanged: model.setSort),
+                value: model.sort,
+                items: model.sortList,
+                onChanged: model.setSort,
+              ),
             ),
           ],
         ),
